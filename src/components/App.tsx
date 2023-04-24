@@ -5,8 +5,18 @@ import { TodoList } from "./TodoList";
 const App: React.FC = () => {
   const [value, setValue] = useState("");
   const [todos, setTodos] = useState<ITodo[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const addTodos = () => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => { 
+
+    setValue(e.target.value);
+  }
+
+  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if(e.key === 'Enter') addTodo()
+  };
+
+  const addTodo = () => {
     if (value) {
       setTodos([
         ...todos,
@@ -20,13 +30,42 @@ const App: React.FC = () => {
     }
   };
 
+  const removeTodo = (id: number): void => { 
+    setTodos(todos.filter(todos => todos.id !== id))
+  }
+  
+
+  const toggleTodo = (id: number): void => {
+    setTodos(todos.map(todo => { 
+      if (todo.id !== id) return todo
+      
+      return {
+        ...todo,
+        complete: !todo.complete
+      }
+    }))
+  };
+
+
+
+
+
+  useEffect(() => { 
+    if (inputRef.current) inputRef.current.focus();
+  },[])
+
   return (
     <div>
       <div>
-        <input value={value} onChange={(e) => setValue(e.target.value)} />
-        <button onClick={addTodos}>add</button>
+        <input
+          value={value}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          ref={inputRef}
+        />
+        <button onClick={addTodo}>add</button>
       </div>
-      <TodoList items={todos} />
+      <TodoList items={todos} removeTodo={removeTodo} toggleTodo={toggleTodo} />
     </div>
   );
 };
