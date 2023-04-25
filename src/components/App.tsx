@@ -59,6 +59,7 @@ const App: React.FC = () => {
     <div className={s.wrapper } >
       <div >
         <input
+          placeholder="Введите задачу"
           className={ s.input}
           value={value}
           onChange={handleChange}
