@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { ITodo } from "../type/data";
 import { TodoList } from "./TodoList";
+import s from './style.module.css'
 
 const App: React.FC = () => {
   const [value, setValue] = useState("");
@@ -55,15 +56,22 @@ const App: React.FC = () => {
   },[])
 
   return (
-    <div>
-      <div>
+    <div className={s.wrapper } >
+      <div >
         <input
+          className={ s.input}
           value={value}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           ref={inputRef}
         />
-        <button onClick={addTodo}>add</button>
+        <button
+          
+          className={ s.button }
+          onClick={addTodo}
+        >
+          Добавить
+        </button>
       </div>
       <TodoList items={todos} removeTodo={removeTodo} toggleTodo={toggleTodo} />
     </div>
